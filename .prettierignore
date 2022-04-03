@@ -1,0 +1,9 @@
+/.prettierignore
+/.vscode/
+/data/
+/frontend/.svelte-kit/
+/frontend/build/
+/frontend/node_modules/
+/img/
+/node_modules/
+/js/

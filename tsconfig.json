@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "./",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "inlineSourceMap": true,
+    "isolatedModules": true,
+    "lib": ["ESNext"],
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "outDir": "./dist/",
+    "removeComments": true,
+    "resolveJsonModule": true,
+    "rootDir": "./",
+    "target": "ESNext"
+  },
+  "include": ["**/*.ts"],
+  "exclude": []
+}
