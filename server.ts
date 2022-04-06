@@ -4,6 +4,7 @@ import log from "./log.js";
 const _ = log();
 
 import express from "express";
+import jimp from "jimp";
 import fetch from "node-fetch";
 
 import { readConfig } from "./config.js";
@@ -26,6 +27,7 @@ app.get("/", (req, res) => {
 
 let mainIntervalID: NodeJS.Timer;
 let refreshTokenIntervalID: NodeJS.Timer;
+let currentlyPlaying: Track;
 app.get("/authorize", async (req, res) => {
   if (mainIntervalID) clearInterval(mainIntervalID);
   if (refreshTokenIntervalID) clearInterval(refreshTokenIntervalID);
@@ -67,6 +69,9 @@ app.get("/authorize", async (req, res) => {
   }
 
   await refreshToken();
+
+  let lastImage: string;
+  let lastImageURL: string;
   mainIntervalID = setInterval(async () => {
     const currentlyPlayingResponse = await fetch(
       "https://api.spotify.com/v1/me/player/currently-playing",
@@ -78,20 +83,46 @@ app.get("/authorize", async (req, res) => {
       }
     );
     if (currentlyPlayingResponse.status !== 200) return;
-    const currentlyPlaying = <Track>await currentlyPlayingResponse.json();
+    currentlyPlaying = <Track>await currentlyPlayingResponse.json();
 
     const timeFormatter = new Intl.DateTimeFormat("en-us", {
       minute: "numeric",
       second: "2-digit"
     });
     const progress = timeFormatter.format(currentlyPlaying.progress_ms);
-    const length = timeFormatter.format(currentlyPlaying.item.duration_ms);
-    const name = currentlyPlaying.item.name;
-    const artists = currentlyPlaying.item.artists.map(e => e.name).join(", ");
+    const length = timeFormatter.format(
+      currentlyPlaying.item?.duration_ms || 0
+    );
+    const name =
+      currentlyPlaying.currently_playing_type === "ad"
+        ? "Advertisement"
+        : currentlyPlaying.item.name;
+    const artists =
+      currentlyPlaying.currently_playing_type === "ad"
+        ? "Spotify"
+        : currentlyPlaying.item.artists.map(e => e.name).join(", ");
+
+    const newUrl = currentlyPlaying.item?.album?.images?.[0].url;
+    if (newUrl && lastImageURL !== newUrl && !newUrl.startsWith("data:")) {
+      lastImage = await (await jimp.read(newUrl))
+        .blur(16)
+        .getBase64Async("image/jpeg");
+      lastImageURL = newUrl;
+    }
+
+    currentlyPlaying.item.album.images = [
+      { ...currentlyPlaying.item.album.images[0], url: lastImage },
+      ...currentlyPlaying.item.album.images
+    ];
 
     _("🎵").verbose(`(${progress}/${length}) ${name} — ${artists}`);
   }, ping_frequency);
   refreshTokenIntervalID = setInterval(refreshToken, 1_800_000);
+});
+
+app.get("/api/latest-data", async (req, res) => {
+  if (currentlyPlaying) res.status(200).send(currentlyPlaying);
+  else res.status(500).send();
 });
 
 app.listen(server_port, () => {

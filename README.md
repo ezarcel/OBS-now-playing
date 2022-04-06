@@ -6,5 +6,7 @@ Widget for OBS that shows the song you are now listening to.
 
 - [x] Get the now playing song
 - [x] Config file
-- [ ] Frontend
-- [ ] Fix Ads giving "UnhandledPromiseRejectionWarning"
+- [x] Frontend
+- [x] Fix Ads giving "UnhandledPromiseRejectionWarning"
+- [ ] Polish API
+- [ ] Mini variant

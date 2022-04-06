@@ -16,5 +16,5 @@
     "target": "ESNext"
   },
   "include": ["**/*.ts"],
-  "exclude": []
+  "exclude": ["./frontend/"]
 }
