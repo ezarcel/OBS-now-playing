@@ -102,18 +102,20 @@ app.get("/authorize", async (req, res) => {
         ? "Spotify"
         : currentlyPlaying.item.artists.map(e => e.name).join(", ");
 
-    const newUrl = currentlyPlaying.item?.album?.images?.[0].url;
-    if (newUrl && lastImageURL !== newUrl && !newUrl.startsWith("data:")) {
-      lastImage = await (await jimp.read(newUrl))
-        .blur(16)
-        .getBase64Async("image/jpeg");
-      lastImageURL = newUrl;
-    }
+    if (currentlyPlaying.currently_playing_type !== "ad") {
+      const newUrl = currentlyPlaying.item?.album?.images?.[0].url;
+      if (newUrl && lastImageURL !== newUrl && !newUrl.startsWith("data:")) {
+        lastImage = await (await jimp.read(newUrl))
+          .blur(16)
+          .getBase64Async("image/jpeg");
+        lastImageURL = newUrl;
+      }
 
-    currentlyPlaying.item.album.images = [
-      { ...currentlyPlaying.item.album.images[0], url: lastImage },
-      ...currentlyPlaying.item.album.images
-    ];
+      currentlyPlaying.item.album.images = [
+        { ...currentlyPlaying.item.album.images[0], url: lastImage },
+        ...currentlyPlaying.item.album.images
+      ];
+    }
 
     _("🎵").verbose(`(${progress}/${length}) ${name} — ${artists}`);
   }, ping_frequency);

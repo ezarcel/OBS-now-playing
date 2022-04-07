@@ -22,7 +22,7 @@
       ad = latestData.currently_playing_type === "ad";
       songName = ad ? "Advertisement" : latestData.item.name;
       artist = ad ? "" : latestData.item.artists.map(e => e.name).join(", ");
-      bgImg = latestData.item.album.images[0].url;
+      bgImg = latestData.item?.album?.images?.[0]?.url;
       mainImg = ad
         ? "https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Spotify_logo_without_text.svg/800px-Spotify_logo_without_text.svg.png"
         : latestData.item.album.images[1].url;
@@ -42,7 +42,7 @@
         minute: "numeric",
         second: "2-digit"
       });
-      currentTimestamp = timeFormatter.format(currentTime);
+      currentTimestamp = timeFormatter.format(currentTime || 0);
       endTimestamp = ad
         ? "?"
         : timeFormatter.format(latestData.item.duration_ms);
@@ -109,7 +109,6 @@
       background-position: center;
       background-size: cover;
       border-radius: 7.5px;
-      // filter: blur(6.5px);
     }
 
     .content {
@@ -120,7 +119,6 @@
       flex-direction: row;
       gap: 10px;
       color: white;
-      // backdrop-filter: blur(7.5px);
       background-color: #0000007f;
       border-radius: 7.5px;
 
@@ -175,7 +173,7 @@
             .progress {
               height: 100%;
               background-color: #ffffff;
-              width: 50%;
+              width: 100%;
               border-radius: 99px;
             }
           }
