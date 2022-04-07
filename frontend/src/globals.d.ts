@@ -1,11 +1,4 @@
-interface AccessToken {
-  access_token: string;
-  token_type: string;
-  expires_in: number;
-  refresh_token: string;
-  scope: string;
-}
-
+// #region Spotify
 interface Track {
   currently_playing_type?: "ad";
   actions?: {
@@ -51,7 +44,6 @@ interface Track {
     uri: `spotify:track:${string}`;
   };
 }
-
 interface Album {
   album_type: "album";
   artists: Artist[];
@@ -69,13 +61,11 @@ interface Album {
   type: "album";
   uri: `spotify:album:${string}`;
 }
-
 interface Image {
   height: number;
   url: string;
   width: number;
 }
-
 interface Artist {
   external_urls: {
     spotify: `https://open.spotify.com/artist/${string}`;
@@ -86,3 +76,17 @@ interface Artist {
   type: "artist";
   uri: `spotify:artist:${string}`;
 }
+// #endregion
+
+// #region Icons
+type IconStyle = "brand" | "duotone" | "light" | "regular" | "solid" | "thin";
+type IconSize = "2xs" | "xs" | "sm" | "lg" | "xl" | "2xl" | "";
+interface IconDefinition {
+  fixedWidth?: boolean;
+  margin?: boolean;
+  name: string;
+  size?: IconSize;
+  style?: IconStyle;
+  swapOpacity?: boolean;
+}
+// #endregion

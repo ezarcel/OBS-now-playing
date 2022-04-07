@@ -1,8 +1,9 @@
 {
-  "name": "obsnowplaying",
+  "name": "obs-now-playing",
   "version": "1.0.0",
+  "author": "ezarcel",
+  "license": "UNLICENSED",
   "type": "module",
-  "description": "",
   "main": "./dist/server.js",
   "scripts": {
     "compile": "tsc",
@@ -10,13 +11,10 @@
     "start": "npm run compile && node ./dist/server.js",
     "start:dev": "nodemon -e js ./dist/server.js"
   },
-  "author": "ezarcel",
-  "license": "UNLICENSED",
   "dependencies": {
     "chalk": "^5.0.1",
     "express": "^4.17.3",
     "fs-extra": "^10.0.1",
-    "jimp": "^0.16.1",
     "node-fetch": "^3.2.3",
     "prettier-plugin-svelte": "^2.6.0",
     "svelte": "^3.46.6"

@@ -53,7 +53,7 @@ interface Track {
 }
 
 interface Album {
-  album_type: "album";
+  album_type: "album" | "single";
   artists: Artist[];
   available_markets: string[];
   external_urls: {
