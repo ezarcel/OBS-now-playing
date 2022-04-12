@@ -6,7 +6,7 @@ import log from "./log.js";
 const { client_id, client_secret, server_port } = readConfig();
 const _ = log("Auth");
 
-export const REDIRECT_URI = `http://localhost:${server_port}/authorize`;
+export const REDIRECT_URI = `http://localhost:${server_port}/api/login-callback`;
 
 export let authInfo: {
   code: string;

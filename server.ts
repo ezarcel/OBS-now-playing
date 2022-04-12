@@ -5,19 +5,18 @@ const _ = log();
 
 import express from "express";
 
-import { authFetch, authInfo, refreshToken } from "./auth.js";
+import { authFetch, authInfo, REDIRECT_URI, refreshToken } from "./auth.js";
 import { readConfig } from "./config.js";
 
 const { client_id, ping_frequency, server_port } = readConfig();
-const REDIRECT_URL = `http://localhost:${server_port}/authorize`;
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
 
-app.get("/", (req, res) => {
+app.get("/api/login", (req, res) => {
   res.redirect(
     302,
-    `https://accounts.spotify.com/authorize?client_id=${client_id}&response_type=code&redirect_uri=${REDIRECT_URL}&scope=user-read-currently-playing`
+    `https://accounts.spotify.com/authorize?client_id=${client_id}&response_type=code&redirect_uri=${REDIRECT_URI}&scope=user-read-currently-playing`
   );
 
   _().verbose("Redirected to Spotify account login");
@@ -26,11 +25,11 @@ app.get("/", (req, res) => {
 let currentlyPlaying: Track;
 let mainIntervalID: NodeJS.Timer;
 let refreshTokenIntervalID: NodeJS.Timer;
-app.get("/authorize", async (req, res) => {
+app.get("/api/login-callback", async (req, res) => {
   if (mainIntervalID) clearInterval(mainIntervalID);
   if (refreshTokenIntervalID) clearInterval(refreshTokenIntervalID);
 
-  res.status(200).send("You may now close this tab");
+  res.status(200).send();
 
   authInfo.code = <string>req.query.code;
   await refreshToken();
@@ -41,6 +40,8 @@ app.get("/authorize", async (req, res) => {
     );
     if (currentlyPlayingResponse.status !== 200) return;
     currentlyPlaying = <Track>await currentlyPlayingResponse.json();
+
+    if (!currentlyPlaying?.item) return;
 
     const timeFormatter = new Intl.DateTimeFormat("en-us", {
       minute: "numeric",

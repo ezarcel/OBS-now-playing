@@ -8,6 +8,7 @@ export interface Settings {
   client_id: string;
   client_secret: string;
   ping_frequency: number;
+  production: boolean;
   server_port: number;
 }
 
@@ -15,6 +16,7 @@ const defaultSettings: Settings = {
   client_id: "<client_id>",
   client_secret: "<client_secret>",
   ping_frequency: 3000,
+  production: true,
   server_port: 3000
 };
 const CONFIG_PATH = "./config.json";
