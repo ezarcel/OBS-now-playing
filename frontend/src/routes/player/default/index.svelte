@@ -1,8 +1,8 @@
 <script lang="ts">
-  import Icon from "../../components/Icon.svelte";
-  import Marquee from "../../components/Marquee.svelte";
+  import Icon from "../../../components/Icon.svelte";
+  import Marquee from "../../../components/Marquee.svelte";
 
-  import { nowPlaying, lastUpdated, latestData } from "../../stores";
+  import { nowPlaying, lastUpdated, latestData } from "../../../stores";
 
   import { onDestroy, onMount } from "svelte";
 

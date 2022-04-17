@@ -4,12 +4,14 @@ import log from "./log.js";
 const _ = log();
 
 import express from "express";
+import fse from "fs-extra";
+const { readdirSync, readJSONSync } = fse;
 import path from "path";
 import url from "url";
 
 import { authFetch, authInfo, REDIRECT_URI, refreshToken } from "./auth.js";
 import { readConfig } from "./config.js";
-import { fileExists } from "./tools.js";
+import { dirExists, fileExists } from "./tools.js";
 
 const { client_id, ping_frequency, production, server_port } = readConfig();
 
@@ -112,6 +114,23 @@ app.get("/api/log-out", async (req, res) => {
   authInfo.token = undefined;
 
   res.status(200).send();
+});
+
+app.get("/api/skins", (req, res) => {
+  try {
+    const SKINS_PATH = "./frontend/src/routes/player/";
+    res.status(200).send(
+      readdirSync(SKINS_PATH)
+        .filter(e => dirExists(path.join(SKINS_PATH, e)))
+        .map(id => ({
+          ...readJSONSync(path.join(SKINS_PATH, id, "meta.json")),
+          id
+        })) as Skin[]
+    );
+  } catch (e) {
+    _().error("Invalid skin detected.");
+    res.status(500).send();
+  }
 });
 
 if (!svelte)

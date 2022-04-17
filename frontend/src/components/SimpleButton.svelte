@@ -4,7 +4,10 @@
   export let accent: boolean = true;
   export let disabled: boolean = false;
   export let hideLabel: boolean = false;
-  export let icon: IconDefinition = { name: "paper-plane", style: "duotone" };
+  export let icon: IconDefinition | null = {
+    name: "paper-plane",
+    style: "duotone"
+  };
   export let link: string = "#";
   export let title: string = "";
   export let wrapText: boolean = true;
@@ -22,7 +25,7 @@
   {title}
   on:click={() => dispatch("click")}
 >
-  <Icon settings={icon} margin={$$slots.default && !hideLabel} />
+  {#if icon}<Icon settings={icon} margin={$$slots.default && !hideLabel} />{/if}
   {#if !hideLabel}<slot />{/if}
 </a>
 

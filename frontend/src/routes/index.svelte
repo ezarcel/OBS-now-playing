@@ -2,11 +2,27 @@
   import { onMount } from "svelte";
 
   import Icon from "../components/Icon.svelte";
+  import Modal from "../components/Modal.svelte";
   import SimpleButton from "../components/SimpleButton.svelte";
+  import Title from "../components/Title.svelte";
 
+  let skins: Skin[];
   let user: Promise<User | { msg: string }> = new Promise(() => {});
-  onMount(updateUser);
+  onMount(() => {
+    updateUser();
+    updateSkins();
+  });
 
+  let pickASkinModalVisible: boolean = false;
+  let skinModalVisible: boolean = false;
+
+  let selectedSkin: Skin;
+  let OBSURL: string;
+  $: OBSURL = `${location.origin}/player/${selectedSkin?.id}`;
+
+  async function updateSkins() {
+    skins = await (await fetch("/api/skins")).json();
+  }
   async function updateUser() {
     user = await (await fetch("/api/current-user")).json();
   }
@@ -19,8 +35,55 @@
     const response = await fetch("/api/log-out");
     if (response.ok) updateUser();
   }
+
+  function pickASkin() {
+    pickASkinModalVisible = true;
+    skinModalVisible = false;
+  }
 </script>
 
+<Modal bind:visible={pickASkinModalVisible}>
+  <Title
+    changePageTitle={false}
+    icon={{ name: "paintbrush-fine" }}
+    text="Pick a skin"
+  />
+  <div class="modal" id="pick-a-skin-modal">
+    {#each skins as skin}
+      <SimpleButton
+        accent={false}
+        icon={null}
+        on:click={() => {
+          selectedSkin = skin;
+          skinModalVisible = true;
+        }}
+      >
+        {skin.name} by {skin.author}
+      </SimpleButton>
+    {/each}
+  </div>
+</Modal>
+<Modal bind:visible={skinModalVisible}>
+  <Title
+    changePageTitle={false}
+    icon={{ name: "paintbrush-fine" }}
+    text="{selectedSkin.name} by {selectedSkin.author}"
+  />
+  <div class="modal" id="skin-modal">
+    <span>Put this URL in OBS:</span>
+    <code>
+      <a
+        href={"#"}
+        title="Click to copy"
+        on:click={() => {
+          navigator.clipboard.writeText(OBSURL);
+        }}
+      >
+        {OBSURL}
+      </a>
+    </code>
+  </div>
+</Modal>
 <div id="main">
   <h1>OBS Now Playing</h1>
   <div class="buttons">
@@ -30,7 +93,8 @@
     <span>and then</span>
     <SimpleButton
       accent={false}
-      icon={{ name: "list-check", style: "duotone" }}
+      icon={{ name: "paintbrush-fine", style: "duotone" }}
+      on:click={pickASkin}
     >
       Pick a skin
     </SimpleButton>
@@ -131,5 +195,19 @@
         color: var(--bg-alt);
       }
     }
+  }
+
+  #pick-a-skin-modal {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    place-items: stretch;
+    gap: 7.5px;
+  }
+
+  #skin-modal {
+    display: flex;
+    flex-direction: column;
+    gap: 7.5px;
   }
 </style>

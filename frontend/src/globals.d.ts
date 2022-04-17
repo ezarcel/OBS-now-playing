@@ -119,3 +119,13 @@ interface IconDefinition {
   swapOpacity?: boolean;
 }
 // #endregion
+
+// #region Other
+interface Skin {
+  author: string;
+  description: string;
+  id: string;
+  name: string;
+  url: string;
+}
+// #endregion

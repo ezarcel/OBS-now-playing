@@ -1,3 +1,4 @@
+// #region Spotify
 interface AccessToken {
   access_token: string;
   token_type: string;
@@ -115,3 +116,14 @@ interface User {
   type: "user";
   uri: `spotify:user:${string}`;
 }
+// #endregion
+
+// #region Other
+interface Skin {
+  author: string;
+  description: string;
+  id: string;
+  name: string;
+  url: string;
+}
+// #endregion
