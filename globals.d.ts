@@ -86,3 +86,32 @@ interface Artist {
   type: "artist";
   uri: `spotify:artist:${string}`;
 }
+
+interface User {
+  country: string;
+  display_name: string;
+  email: string;
+  explicit_content: {
+    filter_enabled: boolean;
+    filter_locked: boolean;
+  };
+  external_urls: {
+    spotify: string;
+  };
+  followers: {
+    href: unknown;
+    total: number;
+  };
+  href: `https://api.spotify.com/v1/users/${string}`;
+  id: string;
+  images: [
+    {
+      height: null;
+      url: string;
+      width: null;
+    }
+  ];
+  product: "open";
+  type: "user";
+  uri: `spotify:user:${string}`;
+}

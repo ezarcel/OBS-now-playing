@@ -7,9 +7,11 @@
   "main": "./dist/server.js",
   "scripts": {
     "compile": "tsc",
+    "compile:all": "npm run compile && cd ./frontend/ && npm run build",
     "compile:watch": "tsc -w",
-    "start": "npm run compile && node ./dist/server.js",
-    "start:dev": "nodemon -e js ./dist/server.js"
+    "install-dependencies": "npm i && cd ./frontend/ && npm i",
+    "start": "node ./dist/server.js",
+    "start:dev": "nodemon -e js,json ./dist/server.js"
   },
   "dependencies": {
     "chalk": "^5.0.1",

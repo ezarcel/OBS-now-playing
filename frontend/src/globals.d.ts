@@ -76,10 +76,39 @@ interface Artist {
   type: "artist";
   uri: `spotify:artist:${string}`;
 }
+
+interface User {
+  country: string;
+  display_name: string;
+  email: string;
+  explicit_content: {
+    filter_enabled: boolean;
+    filter_locked: boolean;
+  };
+  external_urls: {
+    spotify: string;
+  };
+  followers: {
+    href: unknown;
+    total: number;
+  };
+  href: `https://api.spotify.com/v1/users/${string}`;
+  id: string;
+  images: [
+    {
+      height: null;
+      url: string;
+      width: null;
+    }
+  ];
+  product: "open";
+  type: "user";
+  uri: `spotify:user:${string}`;
+}
 // #endregion
 
 // #region Icons
-type IconStyle = "brand" | "duotone" | "light" | "regular" | "solid" | "thin";
+type IconStyle = "brands" | "duotone" | "light" | "regular" | "solid" | "thin";
 type IconSize = "2xs" | "xs" | "sm" | "lg" | "xl" | "2xl" | "";
 interface IconDefinition {
   fixedWidth?: boolean;

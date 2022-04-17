@@ -1,6 +1,11 @@
 import chalk from "chalk";
+import fse from "fs-extra";
+const { readJSONSync } = fse;
 
+import { CONFIG_PATH } from "./config.js";
 import { padding } from "./tools.js";
+
+const rawConfig = readJSONSync(CONFIG_PATH);
 
 interface ILog {
   error: (...data: any[]) => void;
@@ -43,7 +48,9 @@ export default (scope?: string) =>
         throw "";
       },
       verbose: (...data) =>
-        false ? undefined : _(emoji || "ℹ", chalk.rgb(127, 127, 127), data),
+        rawConfig.production || false
+          ? undefined
+          : _(emoji || "ℹ", chalk.rgb(127, 127, 127), data),
       warn: (...data) => _(emoji || "⚠", chalk.yellow, data)
     };
   };

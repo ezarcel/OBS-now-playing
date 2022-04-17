@@ -19,7 +19,7 @@ const defaultSettings: Settings = {
   production: true,
   server_port: 3000
 };
-const CONFIG_PATH = "./config.json";
+export const CONFIG_PATH = "./config.json";
 
 export function readConfig(): Settings | never {
   const _ = log("Config");

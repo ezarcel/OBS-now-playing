@@ -1,17 +1,153 @@
 * {
+  outline: none;
   box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+
+  scrollbar-width: thin;
+  &::-webkit-scrollbar {
+    width: 7.5px;
+    height: 7.5px;
+    border-radius: 7.5px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--bg-alt-alpha50);
+    border-radius: 7.5px;
+
+    &:active {
+      background-color: var(--bg-alt-alpha25) !important;
+    }
+  }
+  &::-webkit-scrollbar-track {
+    background-color: var(--bg-alpha90);
+    border-radius: 7.5px;
+  }
 }
 
-html, body {
-  height: 100%;
-}
+:root {
+  --accent-dark: hsl(141, 73%, 34.5%);
+  --accent: hsl(141, 73%, 42%);
+  --accent-light: hsl(141, 73%, 49.5%);
+  accent-color: var(--accent);
 
+  @media screen and (prefers-color-scheme: light) {
+    color-scheme: light;
+
+    --bg: #fff;
+    --bg-shade1: #eee;
+    --bg-shade2: #ddd;
+    --bg-shade3: #ccc;
+    --bg-shade4: #bbb;
+    --bg-shade5: #aaa;
+    --bg-alpha90: hsla(0, 0%, 100%, 0.9);
+    --bg-alpha75: hsla(0, 0%, 100%, 0.75);
+    --bg-alpha65: hsla(0, 0%, 100%, 0.65);
+    --bg-alpha50: hsla(0, 0%, 100%, 0.5);
+    --bg-alpha35: hsla(0, 0%, 100%, 0.35);
+    --bg-alpha25: hsla(0, 0%, 100%, 0.25);
+    --bg-alpha10: hsla(0, 0%, 100%, 0.1);
+    --bg-alpha5: hsla(0, 0%, 100%, 0.05);
+
+    --bg-alt: #000;
+    --bg-alt-shade1: #111;
+    --bg-alt-shade2: #222;
+    --bg-alt-shade3: #333;
+    --bg-alt-shade4: #444;
+    --bg-alt-shade5: #555;
+    --bg-alt-alpha90: hsla(0, 0%, 0%, 0.9);
+    --bg-alt-alpha75: hsla(0, 0%, 0%, 0.75);
+    --bg-alt-alpha65: hsla(0, 0%, 0%, 0.65);
+    --bg-alt-alpha50: hsla(0, 0%, 0%, 0.5);
+    --bg-alt-alpha35: hsla(0, 0%, 0%, 0.35);
+    --bg-alt-alpha25: hsla(0, 0%, 0%, 0.25);
+    --bg-alt-alpha10: hsla(0, 0%, 0%, 0.1);
+    --bg-alt-alpha5: hsla(0, 0%, 0%, 0.05);
+
+    --calendar-filter: invert(0);
+  }
+
+  @media screen and (prefers-color-scheme: dark),
+    (prefers-color-scheme: nopreference) {
+    color-scheme: dark;
+
+    --bg: #000;
+    --bg-shade1: #111;
+    --bg-shade2: #222;
+    --bg-shade3: #333;
+    --bg-shade4: #444;
+    --bg-shade5: #555;
+    --bg-alpha90: hsla(0, 0%, 0%, 0.9);
+    --bg-alpha75: hsla(0, 0%, 0%, 0.75);
+    --bg-alpha65: hsla(0, 0%, 0%, 0.65);
+    --bg-alpha50: hsla(0, 0%, 0%, 0.5);
+    --bg-alpha35: hsla(0, 0%, 0%, 0.35);
+    --bg-alpha25: hsla(0, 0%, 0%, 0.25);
+    --bg-alpha10: hsla(0, 0%, 0%, 0.1);
+    --bg-alpha5: hsla(0, 0%, 0%, 0.05);
+
+    --bg-alt: #fff;
+    --bg-alt-shade1: #eee;
+    --bg-alt-shade2: #ddd;
+    --bg-alt-shade3: #ccc;
+    --bg-alt-shade4: #bbb;
+    --bg-alt-shade5: #aaa;
+    --bg-alt-alpha90: hsla(0, 0%, 100%, 0.9);
+    --bg-alt-alpha75: hsla(0, 0%, 100%, 0.75);
+    --bg-alt-alpha65: hsla(0, 0%, 100%, 0.65);
+    --bg-alt-alpha50: hsla(0, 0%, 100%, 0.5);
+    --bg-alt-alpha35: hsla(0, 0%, 100%, 0.35);
+    --bg-alt-alpha25: hsla(0, 0%, 100%, 0.25);
+    --bg-alt-alpha10: hsla(0, 0%, 100%, 0.1);
+    --bg-alt-alpha5: hsla(0, 0%, 100%, 0.05);
+
+    --calendar-filter: invert(100%);
+  }
+}
 body {
-  background-color: transparent;
-  font-family: "Lato";
-  
-  display: flex;
-  place-items: center;
-  justify-content: center;
+  background-color: var(--bg);
+  font-family: "Lato", sans-serif;
+  color: var(--bg-alt);
   margin: 0;
+
+  &,
+  optgroup :not(input):not(textarea):not(button):not(a):not(a *) {
+    color: var(--bg-alt);
+  }
+}
+
+a,
+a * {
+  color: var(--accent);
+  transition: filter 0.1s;
+
+  &:is(:focus, :hover),
+  &:is(:focus, :hover) * {
+    color: var(--accent-light);
+  }
+}
+
+hr {
+  border: solid var(--bg-alt-alpha25);
+  border-width: 0.5px 0 0 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: normal;
+
+  &,
+  ul,
+  ol,
+  li {
+    margin: 0;
+    padding: 0;
+  }
+}
+
+table {
+  border-collapse: collapse;
 }
